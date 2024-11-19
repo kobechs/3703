@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: content: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="components/loader.js"></script><script src="classic.js"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        // 問題番号
+        let no = 0;
+        // 正解数
+        let score = 0;
+        // 単語リスト
+        let wordList = [
+            {
+                mondai: "経常利益÷総資本×100",
+                kaitou: "総資本経常利益率"
+            },
+            {
+                mondai: "営業利益÷総資本×100",
+                kaitou: "総資本営業利益率"
+            },
+            {
+                mondai: "当期純利益÷総資本×100",
+                kaitou: "総資本利益率"
+            },
+            {
+                mondai: "当期純利益÷自己資本×100",
+                kaitou: "自己資本利益率"
+            },
+            {
+                mondai: "売上総利益÷売上高×100",
+                kaitou: "売上総利益率"
+            },
+            {
+                mondai: "営業利益÷売上高×100",
+                kaitou: "売上高営業利益率"
+            },
+            {
+                mondai: "経常利益÷売上高×100",
+                kaitou: "売上高経常利益率"
+            },
+            {
+                mondai: "当期純利益÷売上高×100",
+                kaitou: "売上高純利益率"
+            },
+            {
+                mondai: "売上原価÷売上高×100",
+                kaitou: "売上原価率"
+            },
+            {
+                mondai: "売上高÷総資本",
+                kaitou: "総資本回転率"
+            },
+            {
+                mondai: "総出庫数÷平均在庫数",
+                kaitou: "商品回転率"
+            },
+            {
+                mondai: "売上高÷固定資産",
+                kaitou: "固定資産回転率"
+            },
+            {
+                mondai: "売上高÷売上債権",
+                kaitou: "売上債権回転率"
+            },
+            {
+                mondai: "流動資産÷流動負債×100",
+                kaitou: "流動比率"
+            },
+            {
+                mondai: "当座資産÷流動負債×100",
+                kaitou: "当座比率"
+            },
+            {
+                mondai: "負債÷自己資本×100",
+                kaitou: "負債比率"
+            },
+            {
+                mondai: "自己資本÷総資本×100",
+                kaitou: "自己資本比率"
+            },
+            {
+                mondai: "固定資産÷自己資本×100",
+                kaitou: "固定比率"
+            },
+            {
+                mondai: "(当期売上高－前期売上高)÷前期売上高×100",
+                kaitou: "売上成長率"
+            },
+
+        ];
+
+        function showQuestion() {
+            if(no < wordList.length) {
+                // 次の問題がある場合は、表示する
+                document.getElementById("question").innerHTML = wordList[no].mondai;               
+            } else {
+                //全問終了したら、成績を発表する
+                document.getElementById("question").innerHTML = score + "/" + wordList.length;
+                document.getElementById("answerForm").style.display = "none";
+                if(score == wordList.length) {
+                    // 全問正解の場合
+                    document.getElementById("resultMessage").innerHTML = "全問正解！すばらしい！！";
+                    document.getElementById("resultImage").src = "hosigo.png";
+                } else if(score >= wordList.length * 0.6) {
+                    // 6割以上正解の場合
+                    document.getElementById("resultMessage").innerHTML = "惜しい！あともう一問";
+                    document.getElementById("resultImage").src = "hosisan.png";
+                } else {
+                    // 6割未満の場合
+                    document.getElementById("resultMessage").innerHTML = "勉強しよう。";
+                    document.getElementById("resultImage").src = "hosiiti.png";
+                }
+            }
+
+        }
+
+        function checkAnswer(event) {
+         if(event.key === 'Enter') {
+            let answer = document.getElementById("answer").value;
+            if(answer == wordList[no].english) {
+                alert("正解です！");
+                score++;
+            } else {
+                alert("残念！不正解です。");
+            }
+
+        no++;
+        showQuestion();
+        answer = document.getElementById("answer").value = "";
+        }
+    }
+    </script>
+</head>
+<body onload="showQuestion()">
+	<h1 id="title">全商簿記の分析</h1>
+	<div id="question"></div>
+	<div id="answerForm">
+        <div class="result" id="result"></div>
+		<input type="text" id="answer" placeholder="答えを入力" onkeypress="checkAnswer(event)">
+		<button onclick="checkAnswer(event)">OK</button>
+	</div>
+	<p id="resultMessage"></p>
+	<img id="resultImage" src="">
+</body>
+</html>
